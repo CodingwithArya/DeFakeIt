@@ -4,10 +4,11 @@ import numpy as np
 import io
 from mesonet_model.classifiers import Meso4
 
-classifier = Meso4()
-classifier.load('weights/Meso4_DF.h5')
 
-def predict_image(file_img, model):
+def predict_image(file_img):
+    classifier = Meso4()
+    classifier.load('weights/Meso4_DF.h5')
+
     img = Image.open(file_img).convert('RGB').resize((256, 256))
     img_arr = (np.asarray(img) / 255.0).reshape((1, 256, 256, 3))
 

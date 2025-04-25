@@ -1,11 +1,24 @@
 from flask import Flask, request, jsonify
+from predict import predict_image
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
 @app.route('/')
-
 def hello_world():
-    return 'Hello World'
+    print("server running successfully")
+    return "", 204
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image file provided"}, 400)
+    
+    file_img = request.files['image']
+    file_name = secure_filename(file_img.filename)
+
+    result = predict_image(file_img)
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run()   
