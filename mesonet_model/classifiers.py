@@ -30,7 +30,7 @@ class Meso1(Classifier):
     """
     def __init__(self, learning_rate = 0.001, dl_rate = 1):
         self.model = self.init_model(dl_rate)
-        optimizer = Adam(lr = learning_rate)
+        optimizer = Adam(learning_rate=learning_rate)
         self.model.compile(optimizer = optimizer, loss = 'mean_squared_error', metrics = ['accuracy'])
     
     def init_model(self, dl_rate):
@@ -75,7 +75,7 @@ class Meso4(Classifier):
         y = Flatten()(x4)
         y = Dropout(0.5)(y)
         y = Dense(16)(y)
-        y = LeakyReLU(negative_slope=0.1)(y)
+        y = LeakyReLU(alpha=0.1)(y)
         y = Dropout(0.5)(y)
         y = Dense(1, activation = 'sigmoid')(y)
 
@@ -128,7 +128,7 @@ class MesoInception4(Classifier):
         y = Flatten()(x4)
         y = Dropout(0.5)(y)
         y = Dense(16)(y)
-        y = LeakyReLU(negative_slope=0.1)(y)
+        y = LeakyReLU(alpha=0.1)(y)
         y = Dropout(0.5)(y)
         y = Dense(1, activation = 'sigmoid')(y)
 
