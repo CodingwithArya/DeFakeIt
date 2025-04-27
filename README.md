@@ -26,7 +26,7 @@ python server.py --port 5001
 python test_model.py /path/to/img.jpg
 ```
 
-## extension set up
+## setting up google chrome extension
 5. Open Chrome and go to chrome://extensions/
 6. Enable Developer mode (toggle in the top-right)
 7. Load unpacked and select the project’s extension/ folder. (You should now see “DeFakeIt” in your list of extensions!)
