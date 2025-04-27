@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
 from predict import predict_image
 from werkzeug.utils import secure_filename
+from flask_cors import CORS # Necessary to work with Chrome extension
 
 app = Flask(__name__)
+# Enable cors
+CORS(app) 
 
 @app.route('/')
 def hello_world():
