@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DeFakeIt</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- HEADER WITH LOGO + APP NAME -->
+  <header id="header">
+    <img id="logo" src="icons/icon48.png" alt="DeFakeIt logo" />
+    <h1>DeFakeIt</h1>
+  </header>
+
+  <!-- INPUT CONTROLS -->
+  <section id="input-area">
+    <button id="screenshot-btn">📷 Capture Screenshot</button>
+    <div id="upload-zone">
+      <div id="drop-zone" tabindex="0">
+        <p>Drag &amp; Drop</p>
+        <p>or</p>
+        <button id="browse-btn">Browse</button>
+        <p>or Paste (Ctrl+V)</p>
+      </div>
+      <input type="file" id="file-input" accept="image/*" hidden />
+    </div>
+    <img id="preview" src="" alt="preview" hidden />
+  </section>
+
+  <!-- RESULT GAUGE + REASONS -->
+  <section id="result-area" hidden>
+    <div id="gauge-container">
+      <svg id="gauge" viewBox="0 0 200 100"></svg>
+      <div id="percent">0%</div>
+    </div>
+    <p id="reason"></p>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>

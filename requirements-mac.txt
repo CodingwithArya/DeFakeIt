@@ -1,0 +1,13 @@
+flask==2.2.3
+flask-cors==3.0.10
+werkzeug==2.2.3
+numpy==1.23.5
+Pillow==9.4.0
+requests==2.28.2
+
+# on macOS (including Apple Silicon):
+tensorflow-macos; sys_platform == "darwin"
+tensorflow-metal;   sys_platform == "darwin"
+
+# on Windows/Linux:
+tensorflow==2.18.1; sys_platform != "darwin"
