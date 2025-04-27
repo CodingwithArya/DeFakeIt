@@ -31,6 +31,7 @@ def load_model(model_type='Meso4', model_path=None):
         raise FileNotFoundError(f"Model weights not found at {model_path}")
     
     classifier.load(model_path)
+    # add fine tuning here!!!!
     return classifier
 
 def preprocess_image(img):
