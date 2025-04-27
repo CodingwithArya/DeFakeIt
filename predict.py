@@ -82,7 +82,7 @@ def predict_image(image_input, model_type='Meso4', threshold=0.5):
     # Create result dictionary
     result = {
         "score": float(pred_score),
-        "label": "fake" if pred_score > threshold else "real",
+        "label": "fake" if pred_score < threshold else "real",
         "confidence": float(abs(pred_score - 0.5) * 2)  # 0 to 1 confidence
     }
     
