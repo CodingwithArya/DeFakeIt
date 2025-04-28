@@ -1,30 +1,51 @@
 body {
-    width: 320px;
+  background-color: rgba(28, 59, 43, 0.3);  
+  width: 320px;
     font-family: sans-serif;
     text-align: center;
     margin: 0; padding: 12px;
   }
   
   #header {
+    background-color: #1c3b2b; /* dark green */
+    color: white;
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 40px;
+    padding: 12px 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
-  #logo { width: 26px; height: 32px; }
-  h1 { 
-    font-size: 1.2rem; 
-    margin: 0; 
+  /* LOGO inside header */
+  #header #logo {
+    width: 32px;
+    height: 32px;
+    margin-right: 0 10px
+  }
+
+  /* APP NAME */
+  #header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
   }
   
   button {
-    background: #3366ff;
+    background: #1c3b2b; /* dark green */
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 8px 16px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   }
+  
+  /* Hover effect */
+  button:hover {
+    background-color: #2e5d41; /* slightly lighter green on hover */
+  }
+  
   
   #upload-zone { 
     margin: 12px 0;
@@ -86,5 +107,5 @@ body {
     padding: 20px;
     margin: 10px;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
