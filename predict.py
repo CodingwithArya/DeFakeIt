@@ -31,8 +31,28 @@ def load_model(model_type='Meso4', model_path=None):
         raise FileNotFoundError(f"Model weights not found at {model_path}")
     
     classifier.load(model_path)
-    # add fine tuning here!!!!
+    
+    # Fine-tune for 1 batch
+    x_extra, y_extra = load_extra_data()
+    classifier.fit(x_extra, y_extra)
+
+    
     return classifier
+
+def load_extra_data():
+    from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+    datagen = ImageDataGenerator(rescale=1./255)
+    generator = datagen.flow_from_directory(
+        'Dataset/Test',   # <--- Your folder path
+        target_size=(256, 256),
+        batch_size=32,
+        class_mode='binary'
+    )
+    x_batch, y_batch = next(generator)
+    return x_batch, y_batch
+
+
 
 def preprocess_image(img):
     """
