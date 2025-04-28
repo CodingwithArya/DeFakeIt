@@ -43,9 +43,10 @@ function dataURLtoBlob(dataurl) {
   async function captureAndCrop() {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" }, dataUrl => {
-      showCanvasCropper(dataUrl);
+      showInlineCropper(dataUrl);
     });
   }
+
   function showCanvasCropper(dataUrl) {
     // hide inputs
     document.getElementById('input-area').hidden = true;
@@ -200,39 +201,32 @@ function dataURLtoBlob(dataurl) {
   async function handleImage(file) {
     console.log("[DeFakeIt] handleImage() got file:", file);
   
-    // Show preview    
+    // 1) hide the picker
     document.getElementById('input-area').hidden = true;
+  
+    // 2) show the preview
     previewImg.hidden = false;
     previewImg.src    = URL.createObjectURL(file);
   
-    // Build form-data
+    // 3) show the "Change Image" button so user can reset
+    changeBtn.hidden  = false;
+  
+    // (rest unchanged)
     const form = new FormData();
     form.append("image", file);
-    console.log("[DeFakeIt] POSTing to:", BACKEND, "with form file:", form.get("image"));
-  
     try {
       const resp = await fetch(BACKEND, { method: "POST", body: form });
-      console.log("[DeFakeIt] fetch returned status:", resp.status);
-  
-      if (!resp.ok) {
-        const body = await resp.text();
-        console.error("[DeFakeIt] server error:", resp.status, body);
-        alert(`Server error ${resp.status}, see console for details`);
-        return;
-      }
-  
+      if (!resp.ok) throw new Error(await resp.text());
       const json = await resp.json();
-      console.log("[DeFakeIt] server JSON:", json);
-  
-      // Convert the model's score to a percent, and display the label as reason
-      const pct = Math.round(json.score * 100);
+      const pct  = Math.round(json.score * 100);
       showResult(pct, [ json.label ]);
-  
     } catch (err) {
-      console.error("[DeFakeIt] fetch() error:", err);
-      alert("Error contacting server.");
+      console.error(err);
+      alert("Server error: " + err.message);
     }
   }
+  
+
   
   function showResult(pct, reasons) {
     resultArea.hidden = false;
@@ -255,4 +249,129 @@ function dataURLtoBlob(dataurl) {
       ? "Verdict: " + reasons.join(", ") + "."
       : "";
   }
+
+  function showInlineCropper(dataUrl) {
+  // 1) Hide the original inputs
+  document.getElementById('input-area').hidden = true;
+
+  // 2) Create a cropper container inside your .card
+  const card = document.querySelector('.card');
+  const cropperDiv = document.createElement('div');
+  cropperDiv.id = 'cropper-container';
+  Object.assign(cropperDiv.style, {
+    position:    'relative',
+    width:       '100%',
+    marginTop:   '12px',
+    background:  '#fff',
+    padding:     '8px',
+    borderRadius:'8px',
+    boxShadow:   '0 2px 8px rgba(0,0,0,0.15)'
+  });
+  card.appendChild(cropperDiv);
+
+  // 3) Add cancel button
+  const cancel = document.createElement('button');
+  cancel.textContent = 'Cancel';
+  Object.assign(cancel.style, {
+    position:    'absolute',
+    top:         '8px',
+    right:       '8px',
+    background:  '#1c3b2b',
+    color:       'white',
+    border:      'none',
+    padding:     '6px 10px',
+    borderRadius:'4px',
+    cursor:      'pointer',
+    zIndex:      10
+  });
+  cropperDiv.appendChild(cancel);
+  cancel.onclick = () => {
+    cropperDiv.remove();
+    document.getElementById('input-area').hidden = false;
+  };
+
+  // 4) Create the canvas at full card width
+  const canvas = document.createElement('canvas');
+  canvas.style.cursor = 'crosshair';
+  canvas.style.display = 'block';
+  canvas.style.width = '100%';
+  cropperDiv.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  // 5) Load screenshot image
+  const img = new Image();
+  img.onload = () => {
+    // scale canvas to card width
+    const containerWidth = cropperDiv.clientWidth - 16; // account for padding
+    const scale = containerWidth / img.width;
+    canvas.width  = img.width  * scale;
+    canvas.height = img.height * scale;
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    // variables for dragging
+    let dragging = false, sx=0, sy=0, ex=0, ey=0;
+
+    canvas.onmousedown = e => {
+      dragging = true;
+      const r = canvas.getBoundingClientRect();
+      sx = e.clientX - r.left;
+      sy = e.clientY - r.top;
+    };
+
+    canvas.onmousemove = e => {
+      if (!dragging) return;
+      const r = canvas.getBoundingClientRect();
+      ex = e.clientX - r.left;
+      ey = e.clientY - r.top;
+      // redraw + selection box
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const x = Math.min(sx, ex), y = Math.min(sy, ey),
+            w = Math.abs(ex - sx), h = Math.abs(ey - sy);
+      ctx.strokeStyle = '#00FF00';
+      ctx.lineWidth   = 2;
+      ctx.setLineDash([6]);
+      ctx.strokeRect(x, y, w, h);
+      ctx.fillStyle = 'rgba(0,255,0,0.2)';
+      ctx.fillRect(x, y, w, h);
+    };
+
+    canvas.onmouseup = () => {
+      if (!dragging) return;
+      dragging = false;
+      const x = Math.min(sx, ex), y = Math.min(sy, ey),
+            w = Math.abs(ex - sx), h = Math.abs(ey - sy);
+      if (w<10||h<10) {
+        alert('Selection too small—try again.');
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        return;
+      }
+      if (!confirm('Upload this selection?')) {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        return;
+      }
+
+      // crop at full resolution
+      const cropCanvas = document.createElement('canvas');
+      cropCanvas.width  = w / scale;
+      cropCanvas.height = h / scale;
+      const cctx = cropCanvas.getContext('2d');
+      cctx.drawImage(
+        img,
+        x / scale, y / scale,
+        w / scale, h / scale,
+        0, 0,
+        w / scale, h / scale
+      );
+      cropCanvas.toBlob(blob => {
+        cropperDiv.remove();
+        handleImage(blob);
+      }, 'image/png');
+    };
+  };
+  img.src = dataUrl;
+}
+
   
