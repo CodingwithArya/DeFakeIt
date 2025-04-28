@@ -1,21 +1,21 @@
-# Use an official lightweight Python image
+# using lightweight Python image for docker (we don't need anything fancy)
 FROM python:3.10-slim
 
-# Set environment variables
+# setting env vars
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Create a working directory
+# creating working directory
 WORKDIR /app
 
-# Copy everything into the container
+# copying Flask app into directory
 COPY . /app
 
-# install requirements
+# install requirements (using requirements.txt)
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 5001 (bc MAC uses 5000 for AirTunes) for Flask
+# choosing port 5001 (bc MAC uses 5000 for AirTunes) for API
 EXPOSE 5001
 
-# Command to run the app
+# command to run app (choosing language and specific file that houses app)
 CMD ["python", "server.py"]
