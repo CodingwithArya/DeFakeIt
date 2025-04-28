@@ -35,6 +35,7 @@ function dataURLtoBlob(dataurl) {
   const percentLabel  = document.getElementById("percent");
   const reasonP       = document.getElementById("reason");
   const gaugeSvg      = document.getElementById("gauge");
+  const changeBtn     = document.getElementById("change-image-btn");
   
   // 1) CAPTURE VISIBLE TAB
   screenshotBtn.addEventListener("click", async () => {
@@ -76,12 +77,22 @@ function dataURLtoBlob(dataurl) {
       }
     }
   });
+
+  changeBtn.addEventListener("click", () => {
+    console.log("am in image click")
+    previewImg.hidden   = true;
+    resultArea.hidden   = true;
+    changeBtn.hidden    = true;
+    previewImg.src      = "";
+    document.getElementById('input-area').hidden = false;
+  });
   
   // SEND to backend & RENDER
   async function handleImage(file) {
     console.log("[DeFakeIt] handleImage() got file:", file);
   
-    // Show preview
+    // Show preview    
+    document.getElementById('input-area').hidden = true;
     previewImg.hidden = false;
     previewImg.src    = URL.createObjectURL(file);
   
@@ -132,7 +143,7 @@ function dataURLtoBlob(dataurl) {
   
     // Friendly, descriptive reason text
     reasonP.textContent = reasons.length
-      ? "Likely deepfake content detected: " + reasons.join(", ") + "."
+      ? "Verdict: " + reasons.join(", ") + "."
       : "";
   }
   

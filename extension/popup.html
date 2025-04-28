@@ -24,11 +24,16 @@
       </div>
       <input type="file" id="file-input" accept="image/*" hidden />
     </div>
-    <img id="preview" src="" alt="preview" hidden />
   </section>
 
   <!-- RESULT GAUGE + REASONS -->
   <section id="result-area" hidden>
+    <div id="preview-container">
+      <p>Uploaded Image:</p>
+      <button id="change-image-btn">Upload New Image</button>
+    </div>
+    <img id="preview" src="" alt="preview" hidden />
+    <p id="confidence">Confidence:</p>
     <div id="gauge-container">
       <svg id="gauge" viewBox="0 0 200 100"></svg>
       <div id="percent">0%</div>
