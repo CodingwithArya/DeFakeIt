@@ -19,17 +19,18 @@ def load_model(model_type='Meso4', model_path=None):
     """    
     if model_type == 'Meso4':
         classifier = Meso4()
-        default_path = 'mesonet_model/weights/Meso4_DF_Updated.weights.h5'
+        default_path = 'mesonet_model/weights/New-Meso4_DF.h5'
     else:  # MesoInception4
         classifier = MesoInception4()
         default_path = 'mesonet_model/weights/MesoInception_DF.h5'
     
     model_path = model_path or default_path
-    
+
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model weights not found at {model_path}")
-    
+
     classifier.load(model_path)
+    classifier.model.save(r'C:\Users\misha\OneDrive - UW\Documents\sweccathon\DeFakeIt\mesonet_model\weights\New-Meso4_DF.h5')
 
     # ~ CODE FOR RETRAINING MODEL ~
     # train_dir = r'C:\Users\misha\OneDrive - UW\Documents\sweccathon\DeFakeIt\mesonet_model\Dataset\Test'

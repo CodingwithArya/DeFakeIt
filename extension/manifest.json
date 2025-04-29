@@ -26,7 +26,7 @@
       "http://127.0.0.1:5001/*"
     ],
     "content_security_policy": {
-      "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' http://localhost:5001 http://127.0.0.1:5001 http://localhost:8080/ https://deepfakeit-api-417007895747.us-central1.run.app;"
+      "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' http://localhost:5001 http://127.0.0.1:5001 http://localhost:8080/ https://deepfake-api-417007895747.us-central1.run.app;"
     }
   }
   

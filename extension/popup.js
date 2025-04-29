@@ -22,7 +22,7 @@ function dataURLtoBlob(dataurl) {
   });
   
   // 🔗 Your backend endpoint (now on 5001)
-  const BACKEND = "https://deepfakeit-api-417007895747.us-central1.run.app/predict";
+  const BACKEND = "https://deepfake-api-417007895747.us-central1.run.app/predict";
   console.log("[DeFakeIt] talking to:", BACKEND);
   
   const screenshotBtn = document.getElementById("screenshot-btn");

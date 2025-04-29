@@ -10,12 +10,10 @@ WORKDIR /app
 
 # copying Flask app into directory
 COPY . /app
+COPY mesonet_model/ /app/mesonet_model/
 
 # install requirements (using requirements.txt)
 RUN pip install --no-cache-dir -r requirements.txt
-
-# choosing port 5001 (bc MAC uses 5000 for AirTunes) for API
-EXPOSE 5001
 
 # command to run app (choosing language and specific file that houses app)
 CMD ["python", "server.py"]
