@@ -21,8 +21,7 @@ function dataURLtoBlob(dataurl) {
     }
   });
   
-  // 🔗 Your backend endpoint (now on 5001)
-  const BACKEND = "https://deepfakeit-api-417007895747.us-central1.run.app/predict";
+  const BACKEND = "http://localhost:8080/predict";
   console.log("[DeFakeIt] talking to:", BACKEND);
   
   const screenshotBtn = document.getElementById("screenshot-btn");
@@ -255,12 +254,16 @@ function dataURLtoBlob(dataurl) {
       </defs>
     `;
   
-    // use ❌ when fake (<50%), ✅ when real (>=50%)
-    const verdictEmoji = pct < 50 ? '❌' : '✅';
+    // pick emoji based on the actual verdict label (not the percent)
+    const verdictLabel = (reasons[0] || "").toLowerCase(); // e.g. "fake" or "real"
+    const verdictEmoji = verdictLabel === "fake" ? "❌" : "✅";
+  
+    // clear old text and write new verdict
     reasonP.textContent = reasons.length
       ? `${verdictEmoji} Verdict: ${reasons.join(', ')}.`
       : "";
   }
+  
   
   
 
