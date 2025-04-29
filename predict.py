@@ -3,6 +3,7 @@ from PIL import Image
 import io
 import os
 from mesonet_model.classifiers import Meso4, MesoInception4
+# from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # function to load in model with given weights
 def load_model(model_type='Meso4', model_path=None):
@@ -18,7 +19,7 @@ def load_model(model_type='Meso4', model_path=None):
     """    
     if model_type == 'Meso4':
         classifier = Meso4()
-        default_path = 'mesonet_model/weights/Meso4_DF.h5'
+        default_path = 'mesonet_model/weights/Meso4_DF_Updated.weights.h5'
     else:  # MesoInception4
         classifier = MesoInception4()
         default_path = 'mesonet_model/weights/MesoInception_DF.h5'
@@ -29,7 +30,35 @@ def load_model(model_type='Meso4', model_path=None):
         raise FileNotFoundError(f"Model weights not found at {model_path}")
     
     classifier.load(model_path)
-    # add fine tuning here!!!!
+
+    # ~ CODE FOR RETRAINING MODEL ~
+    # train_dir = r'C:\Users\misha\OneDrive - UW\Documents\sweccathon\DeFakeIt\mesonet_model\Dataset\Test'
+    # train_datagen = ImageDataGenerator(rescale=1./255, validation_split=0.2)
+
+    # train_generator = train_datagen.flow_from_directory(
+    #     train_dir,
+    #     target_size=(256, 256),
+    #     batch_size=32,
+    #     class_mode='binary',
+    #     subset='training'
+    # )
+
+    # val_generator = train_datagen.flow_from_directory(
+    #     train_dir,
+    #     target_size=(256, 256),
+    #     batch_size=32,
+    #     class_mode='binary',
+    #     subset='validation'
+    # )
+
+    # classifier.model.fit(
+    #     train_generator,
+    #     epochs=10,
+    #     validation_data=val_generator
+    # )
+
+    # classifier.model.save_weights(r'C:\Users\misha\OneDrive - UW\Documents\sweccathon\DeFakeIt\mesonet_model\weights\Meso4_DF_Updated.weights.h5')
+    
     return classifier
 
 # function to process image before giving it to model
