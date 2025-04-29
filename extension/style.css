@@ -100,38 +100,29 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   
-  #uploaded-container {
-    background-color: #f1f5f0;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
   #uploaded-info {
-    border: 1px solid #d6e3db;
-    border-radius: 8px;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 10px;
   }
   
   #change-image-btn {
-    background-color: white;
-    border: 1px solid #ccc;
+    background-color: #f1f5f0; 
+    border: 2px solid #1c3d30; 
+    color: #1c3d30; 
     border-radius: 6px;
     padding: 10px 20px;
     font-size: 14px;
     font-weight: 500;
-    color: #1c3d30;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
   
   #change-image-btn:hover {
-    background-color: #f5f5f5;
-  }  
+    background-color: #1c3d30; 
+    color: #ffffff; 
+  }
   
   #uploaded-text {
     color: #5e7d71;
