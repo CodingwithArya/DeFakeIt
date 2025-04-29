@@ -219,8 +219,8 @@ function dataURLtoBlob(dataurl) {
       console.log(resp)
       if (!resp.ok) throw new Error(await resp.text());
       const json = await resp.json();
-      const pct  = Math.round(json.score * 100);
-      showResult(pct, [ json.label ]);
+      const confPercent = Math.round(json.confidence * 100);
+      showResult(confPercent, [ json.label ], json.score);
     } catch (err) {
       console.error(err);
       alert("Server error: " + err.message);
@@ -255,10 +255,13 @@ function dataURLtoBlob(dataurl) {
       </defs>
     `;
   
+    // use ❌ when fake (<50%), ✅ when real (>=50%)
+    const verdictEmoji = pct < 50 ? '❌' : '✅';
     reasonP.textContent = reasons.length
-      ? "✅ Verdict: " + reasons.join(", ") + "."
+      ? `${verdictEmoji} Verdict: ${reasons.join(', ')}.`
       : "";
   }
+  
   
 
   function showInlineCropper(dataUrl) {
