@@ -22,7 +22,7 @@ function dataURLtoBlob(dataurl) {
   });
   
   // 🔗 Your backend endpoint (now on 5001)
-  const BACKEND = "http://localhost:5001/predict";
+  const BACKEND = "https://deepfakeit-api-417007895747.us-central1.run.app/predict";
   console.log("[DeFakeIt] talking to:", BACKEND);
   
   const screenshotBtn = document.getElementById("screenshot-btn");
@@ -216,6 +216,7 @@ function dataURLtoBlob(dataurl) {
     form.append("image", file);
     try {
       const resp = await fetch(BACKEND, { method: "POST", body: form });
+      console.log(resp)
       if (!resp.ok) throw new Error(await resp.text());
       const json = await resp.json();
       const pct  = Math.round(json.score * 100);

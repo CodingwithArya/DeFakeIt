@@ -18,7 +18,7 @@ def hello_world():
 def predict():
     # checking that image was provided
     if 'image' not in request.files:
-        return jsonify({"error": "No image file provided"}, 400)
+        return jsonify({"error": "No image file provided"}), 400
     
     # getting image from files
     file_img = request.files['image']
@@ -30,4 +30,4 @@ def predict():
 
 # running app, host is 0.0.0.0 so it runs on all addresses and post is 5001 bc AirTunes uses 5000
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)   
+    app.run(host='0.0.0.0', port=8080)   

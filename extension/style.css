@@ -80,13 +80,19 @@ body {
   #confidence { 
     margin-top: 20px;
     font-size: 15px;
-    text-align: left;
+    text-align: left;  
   }
-  #gauge { width: 100%; height: 100%; }
+  #gauge { 
+    width: 100%; 
+    height: 100%; 
+    margin-left: 20px;
+  }
   #percent {
     position: absolute;
     top: 36px; left: 0; width: 100%;
-    font-size: 1.2rem; font-weight: bold;
+    font-size: 1.2rem; font-weight: bold;  
+    margin-left: 25px;
+    margin-top: 10px;
   }
   #reason {
     font-size: 0.9rem;
