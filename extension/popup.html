@@ -26,20 +26,23 @@
       </div>
     </section>
 
-    <!-- RESULT GAUGE + REASONS -->
+    <!-- RESULT AREA: MINIMAL CLEAN VERSION -->
     <section id="result-area" hidden>
-      <div id="preview-container">
-        <p>Uploaded Image:</p>
+      <div id="uploaded-info">
         <button id="change-image-btn">Upload New Image</button>
       </div>
+    
       <img id="preview" src="" alt="preview" hidden />
-      <p id="confidence">Confidence:</p>
-      <div id="gauge-container">
-        <svg id="gauge" viewBox="0 0 200 100"></svg>
-        <div id="percent">0%</div>
+    
+      <div id="confidence-container">
+        <h3>Confidence Score</h3>
+        <div id="gauge-container">
+          <svg id="gauge" viewBox="0 0 200 100"></svg>
+          <div id="percent">0%</div>
+        </div>
+        <p id="reason"></p>
       </div>
-      <p id="reason"></p>
-    </section>
+    </section>    
   </div>
   <script src="popup.js"></script>
 </body>

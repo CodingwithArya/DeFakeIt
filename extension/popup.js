@@ -233,22 +233,32 @@ function dataURLtoBlob(dataurl) {
     percentLabel.textContent = pct + "%";
   
     // DRAW the semi-gauge
-    const r    = 80;
+    const r = 80;
     const circ = Math.PI * r;
-    const offset = circ * (1 - pct/100);
+    const offset = circ * (1 - pct / 100);
+    const green = "#1c3d30"; // dark green
+    const lightGreen = "#88c999"; // lighter green
+  
     gaugeSvg.innerHTML = `
       <path d="M20,100 A80,80 0 0,1 180,100" 
             fill="none" stroke="#eee" stroke-width="20"/>
       <path d="M20,100 A80,80 0 0,1 180,100"
-            fill="none" stroke="#FF4D4F" stroke-width="20"
+            fill="none" stroke="url(#grad1)" stroke-width="20"
             stroke-dasharray="${circ} ${circ}"
-            stroke-dashoffset="${offset}"/>`;
+            stroke-dashoffset="${offset}"/>
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:${lightGreen};stop-opacity:1" />
+          <stop offset="100%" style="stop-color:${green};stop-opacity:1" />
+        </linearGradient>
+      </defs>
+    `;
   
-    // Friendly, descriptive reason text
     reasonP.textContent = reasons.length
-      ? "Verdict: " + reasons.join(", ") + "."
+      ? "✅ Verdict: " + reasons.join(", ") + "."
       : "";
   }
+  
 
   function showInlineCropper(dataUrl) {
   // 1) Hide the original inputs
