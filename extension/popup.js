@@ -1,4 +1,4 @@
-// Converts a base64 dataURL to a Blob without violating CSP
+//Converts a base64 dataURL to a Blob without violating CSP
 function dataURLtoBlob(dataurl) {
     const [header, base64] = dataurl.split(',');
     const mime = header.match(/:(.*?);/)[1];
@@ -11,7 +11,7 @@ function dataURLtoBlob(dataurl) {
     return new Blob([u8], { type: mime });
   }
   
-  // 1) Catch any image pasted into the popup
+  //Catch any image pasted into the popup
   document.addEventListener("paste", e => {
     for (let item of e.clipboardData.items) {
       if (item.kind === "file" && item.type.startsWith("image/")) {
@@ -21,7 +21,6 @@ function dataURLtoBlob(dataurl) {
     }
   });
   
-  // 🔗 Your backend endpoint (now on 5001)
   const BACKEND = "https://deepfake-api-417007895747.us-central1.run.app/predict";
   console.log("[DeFakeIt] talking to:", BACKEND);
   
@@ -37,7 +36,7 @@ function dataURLtoBlob(dataurl) {
   const gaugeSvg      = document.getElementById("gauge");
   const changeBtn     = document.getElementById("change-image-btn");
   
-  // 1) CAPTURE VISIBLE TAB
+  //CAPTURE VISIBLE TAB
   screenshotBtn.addEventListener("click", captureAndCrop);
 
   async function captureAndCrop() {
@@ -48,7 +47,6 @@ function dataURLtoBlob(dataurl) {
   }
 
   function showCanvasCropper(dataUrl) {
-    // hide inputs
     document.getElementById('input-area').hidden = true;
   
     const overlay = document.createElement('div');
@@ -156,13 +154,13 @@ function dataURLtoBlob(dataurl) {
   
 
   
-  // 2) BROWSE button → opens file picker
+  //BROWSE button opens file picker
   browseBtn.addEventListener("click", () => fileInput.click());
   fileInput.addEventListener("change", () => {
     if (fileInput.files[0]) handleImage(fileInput.files[0]);
   });
   
-  // 3) DRAG & DROP
+  //DRAG & DROP
   dropZone.addEventListener("dragover", e => {
     e.preventDefault();
     dropZone.style.borderColor = "#007bff";
@@ -178,7 +176,7 @@ function dataURLtoBlob(dataurl) {
     if (f && f.type.startsWith("image/")) handleImage(f);
   });
   
-  // 4) PASTE into drop zone
+  //PASTE into drop zone
   dropZone.addEventListener("paste", e => {
     for (let item of e.clipboardData.items) {
       if (item.kind === "file" && item.type.startsWith("image/")) {
@@ -197,21 +195,13 @@ function dataURLtoBlob(dataurl) {
     document.getElementById('input-area').hidden = false;
   });
   
-  // SEND to backend & RENDER
+  //SEND to backend & RENDER
   async function handleImage(file) {
     console.log("[DeFakeIt] handleImage() got file:", file);
-  
-    // 1) hide the picker
     document.getElementById('input-area').hidden = true;
-  
-    // 2) show the preview
     previewImg.hidden = false;
     previewImg.src    = URL.createObjectURL(file);
-  
-    // 3) show the "Change Image" button so user can reset
     changeBtn.hidden  = false;
-  
-    // (rest unchanged)
     const form = new FormData();
     form.append("image", file);
     try {
@@ -232,14 +222,11 @@ function dataURLtoBlob(dataurl) {
   function showResult(pct, reasons) {
     resultArea.hidden = false;
     percentLabel.textContent = pct + "%";
-  
-    // DRAW the semi-gauge
     const r = 80;
     const circ = Math.PI * r;
     const offset = circ * (1 - pct / 100);
-    const green = "#1c3d30"; // dark green
-    const lightGreen = "#88c999"; // lighter green
-  
+    const green = "#1c3d30";
+    const lightGreen = "#88c999";
     gaugeSvg.innerHTML = `
       <path d="M20,100 A80,80 0 0,1 180,100" 
             fill="none" stroke="#eee" stroke-width="20"/>
@@ -254,12 +241,8 @@ function dataURLtoBlob(dataurl) {
         </linearGradient>
       </defs>
     `;
-  
-    // pick emoji based on the actual verdict label (not the percent)
-    const verdictLabel = (reasons[0] || "").toLowerCase(); // e.g. "fake" or "real"
+    const verdictLabel = (reasons[0] || "").toLowerCase();
     const verdictEmoji = verdictLabel === "fake" ? "❌" : "✅";
-  
-    // clear old text and write new verdict
     reasonP.textContent = reasons.length
       ? `${verdictEmoji} Verdict: ${reasons.join(', ')}.`
       : "";
@@ -269,10 +252,7 @@ function dataURLtoBlob(dataurl) {
   
 
   function showInlineCropper(dataUrl) {
-  // 1) Hide the original inputs
   document.getElementById('input-area').hidden = true;
-
-  // 2) Create a cropper container inside your .card
   const card = document.querySelector('.card');
   const cropperDiv = document.createElement('div');
   cropperDiv.id = 'cropper-container';
@@ -286,8 +266,6 @@ function dataURLtoBlob(dataurl) {
     boxShadow:   '0 2px 8px rgba(0,0,0,0.15)'
   });
   card.appendChild(cropperDiv);
-
-  // 3) Add cancel button
   const cancel = document.createElement('button');
   cancel.textContent = 'Cancel';
   Object.assign(cancel.style, {
@@ -308,7 +286,6 @@ function dataURLtoBlob(dataurl) {
     document.getElementById('input-area').hidden = false;
   };
 
-  // 4) Create the canvas at full card width
   const canvas = document.createElement('canvas');
   canvas.style.cursor = 'crosshair';
   canvas.style.display = 'block';
@@ -316,17 +293,13 @@ function dataURLtoBlob(dataurl) {
   cropperDiv.appendChild(canvas);
   const ctx = canvas.getContext('2d');
 
-  // 5) Load screenshot image
   const img = new Image();
   img.onload = () => {
-    // scale canvas to card width
-    const containerWidth = cropperDiv.clientWidth - 16; // account for padding
+    const containerWidth = cropperDiv.clientWidth - 16;
     const scale = containerWidth / img.width;
     canvas.width  = img.width  * scale;
     canvas.height = img.height * scale;
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    // variables for dragging
     let dragging = false, sx=0, sy=0, ex=0, ey=0;
 
     canvas.onmousedown = e => {
@@ -341,7 +314,6 @@ function dataURLtoBlob(dataurl) {
       const r = canvas.getBoundingClientRect();
       ex = e.clientX - r.left;
       ey = e.clientY - r.top;
-      // redraw + selection box
       ctx.clearRect(0,0,canvas.width,canvas.height);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       const x = Math.min(sx, ex), y = Math.min(sy, ey),
@@ -370,8 +342,6 @@ function dataURLtoBlob(dataurl) {
         ctx.drawImage(img,0,0,canvas.width,canvas.height);
         return;
       }
-
-      // crop at full resolution
       const cropCanvas = document.createElement('canvas');
       cropCanvas.width  = w / scale;
       cropCanvas.height = h / scale;

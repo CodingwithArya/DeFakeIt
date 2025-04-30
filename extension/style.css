@@ -7,7 +7,7 @@ body {
   }
   
   #header {
-    background-color: #1c3b2b; /* dark green */
+    background-color: #1c3b2b;
     color: white;
     display: flex;
     align-items: center;
@@ -15,14 +15,12 @@ body {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
-  /* LOGO inside header */
   #header #logo {
     width: 32px;
     height: 32px;
     margin-right: 0 10px
   }
 
-  /* APP NAME */
   #header h1 {
     font-size: 20px;
     font-weight: 600;
@@ -30,7 +28,7 @@ body {
   }
   
   button {
-    background: #1c3b2b; /* dark green */
+    background: #1c3b2b;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -41,9 +39,8 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   }
   
-  /* Hover effect */
   button:hover {
-    background-color: #2e5d41; /* slightly lighter green on hover */
+    background-color: #2e5d41;
   }
   
   
